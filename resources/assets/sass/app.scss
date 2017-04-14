@@ -1,0 +1,38 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+
+.post{
+	background-color:white;
+	border-radius:5px;
+	padding : 1%;
+	margin-bottom:20px;
+	h1{
+		margin-top:0px;
+	}
+	h4{
+		color:#3097D1;
+	}
+}
+.post_right{
+	text-align : right;
+}
+.post_left{
+	font-size:26px;
+}
+.inline{
+	display:inline-block;
+}
+.nav{
+	font-size:20px;
+}
+.navbar-brand{
+	font-size:25px;
+}
