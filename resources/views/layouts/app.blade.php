@@ -23,9 +23,20 @@
 <body>
     <div id="app">
         @include('layouts.navbar')
-
-        @yield('content')
-        @include('layouts.errors')
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    @yield('content')
+                </div>
+                @if(Request::url() !== "http://blog.dev/login" && Request::url() !== "http://blog.dev/register")
+                    <div class="col-md-3 col-md-offset-1">
+                        @include('layouts.sidebar') 
+                    </div>
+                @endif
+            </div>
+            @include('layouts.errors')
+        </div>
     </div>
 
     <!-- Scripts -->

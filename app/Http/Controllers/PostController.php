@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Post;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,7 @@ class PostController extends Controller
 {
 
 	public function __construct(){
-		$this->middleware('auth',['except' =>'index']);
+		$this->middleware('auth')->except(['index','show']);
 	}
     public function index(){
         $posts = Post::orderBy('created_at', 'desc')->get();
@@ -48,10 +49,19 @@ class PostController extends Controller
        return redirect('/');
     }
     public function delete(Post $post){
-        if(auth()->id() !== $post->user->id){
-            return redirect('/');
+        if(auth()->id() === $post->user->id){
+            $post->delete();
         }
-        $post->delete();
         return redirect('/');
+    }
+    public function show(Post $post){
+        $categories = Category::all()->diff($post->categories);
+        return view('post.show', compact(['post', 'categories']));
+    }
+    public function add(Post $post, Category $category){
+        if(auth()->id() === $post->user->id){
+            $post->categories()->attach($category);
+        }
+        return back();
     }
 }
