@@ -31,3 +31,6 @@ Route::post('categories/edit/{id}','CategoryController@editStore');
 Route::get('categories/delete/{category}','CategoryController@delete');
 
 Auth::routes();
+
+Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
+Route::get('login/facebook/callback', 'Auth\LoginController@handleCallback');
