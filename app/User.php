@@ -29,10 +29,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function posts(){
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
-    public function categories(){
+    public function categories()
+    {
         return $this->hasMany(Category::class);
     }
 }

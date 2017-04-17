@@ -7,14 +7,17 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-	public function index(Category $category){
+	public function index(Category $category)
+	{
 		$posts = $category->posts;
 		return view('index', compact('posts'));
 	}
-	public function create(){
+	public function create()
+	{
 		return view('category.create');
 	}
-	public function store(){
+	public function store()
+	{
 		$this->validate(request(),[
 			'category' => 'required|max:255'
 		]);
@@ -26,13 +29,15 @@ class CategoryController extends Controller
 		
 		return redirect('/');
 	}
-	public function edit(Category $category){
-        if(auth()->id() !== $category->user->id){
+	public function edit(Category $category)
+	{
+        if (auth()->id() !== $category->user->id) {
             return redirect('/');
         }
 		return view('category.edit', compact('category'));
 	}
-	public function editStore($id){
+	public function editStore($id)
+	{
 		$this->validate(request(),[
 			'name' => 'required|max:255'
 		]);
@@ -43,8 +48,9 @@ class CategoryController extends Controller
 
 		return redirect('/');
 	}
-	public function delete(Category $category){
-        if(auth()->id() === $category->user->id){
+	public function delete(Category $category)
+	{
+        if (auth()->id() === $category->user->id) {
             $category->delete();
         }
         return redirect('/');

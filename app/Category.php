@@ -2,7 +2,6 @@
 
 namespace App;
 
-
 class Category extends Model
 {
 	public function posts(){
