@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -22,7 +23,7 @@ class PostController extends Controller
     }
     public function store(){
     	$this->validate(request(), [
-    		'title' => 'required|min:5|max:255',
+    		'title' => 'unique|required|min:5|max:255',
     		'body' => 'required'
      	]);
 
@@ -63,5 +64,20 @@ class PostController extends Controller
             $post->categories()->attach($category);
         }
         return back();
+    }
+
+    public function imgUpload(){
+        return view('user.img');
+    }
+    public function imgStore(){
+        if (request()->file('photo')->isValid()) {
+            $path = request()->photo->store('img');
+        }
+        $filename = basename($path);
+        if(auth()->user()->img !== 'blank-pic.png'){
+            Storage::delete('img/' . auth()->user()->img);
+        }
+        auth()->user()->update(['img' => $filename]);
+        return redirect('/');
     }
 }

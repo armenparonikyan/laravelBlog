@@ -20,6 +20,8 @@ Route::get('/posts/delete/{post}', 'PostController@delete');
 Route::get('/posts/show/{post}', 'PostController@show');
 Route::get('/posts/add/{post}/{category}', 'PostController@add');
 
+Route::get('/user/img/upload', 'PostController@imgUpload');
+Route::post('/user/img/store', 'PostController@imgstore');
 
 Route::get('/posts/categories/{category}', 'CategoryController@index');
 Route::get('categories/create', 'CategoryController@create');
