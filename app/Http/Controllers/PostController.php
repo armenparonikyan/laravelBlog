@@ -16,8 +16,11 @@ class PostController extends Controller
 	}
     public function index()
     {
+        $data = request()->data;
+        
         $posts = Post::orderBy('created_at', 'desc')->get();
-    	return view('index', compact('posts'));
+
+    	return view('index', compact(['posts','data']));
     }
 
     public function create()
@@ -84,8 +87,8 @@ class PostController extends Controller
         if (request()->file('photo')->isValid()) {
             $path = request()->photo->store('img');
         }
-        $filename = basename($path);
-        if (auth()->user()->img !== 'blank-pic.png') {
+        $filename = '/storage/img/'.basename($path);
+        if (auth()->user()->img !== '/storage/img/blank-pic.png') {
             Storage::delete('img/' . auth()->user()->img);
         }
         auth()->user()->update(['img' => $filename]);

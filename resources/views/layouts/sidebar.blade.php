@@ -13,4 +13,15 @@
 		</div>
 	</div>
 	@endforeach
+
+	@if(Auth::check() && Auth::user()->fbUser && Request::url() ==='http://blog.dev')
+		<h1 id="fbFriends">FB friends</h1>
+		@if($data)
+			<ul>
+				@foreach($data->data as $friend)
+					<li>{{$friend}}</li>
+				@endforeach
+			</ul>
+		@endif
+	@endif
 </div>

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Category;
+use App\FacebookUser;
 use App\Post;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -36,5 +37,9 @@ class User extends Authenticatable
     public function categories()
     {
         return $this->hasMany(Category::class);
+    }
+    public function fbUser()
+    {
+        return $this->hasOne(FacebookUser::class);
     }
 }

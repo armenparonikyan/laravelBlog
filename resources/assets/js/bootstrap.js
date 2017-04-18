@@ -1,5 +1,5 @@
 
-window._ = require('lodash');
+//window._ = require('lodash');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -17,7 +17,7 @@ require('bootstrap-sass');
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = require('vue');
+//window.Vue = require('vue');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

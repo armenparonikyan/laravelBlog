@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\FacebookUser;
 use App\Http\Controllers\Controller;
+use App\User;
+use GuzzleHttp\Client;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -38,12 +41,21 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
     }
 
-    public function redirectToProvider(){
+    public function redirectToProvider()
+    {
         return Socialite::driver('facebook')->scopes(['user_friends'])->redirect();
     }
 
-    public function handleCallback(){
+    public function handleCallback()
+    {
         $user = Socialite::driver('facebook')->user();
-        dd($user);
+        FacebookUser::checkAndLogIn($user);
+
+        $client = new Client();
+
+        $response = $client->get('https://graph.facebook.com/v2.8/' . $user->getId() . '/friends?access_token='. $user->token);
+        $data = json_decode($response->getBody());
+        
+        return redirect()->action('PostController@index', ['data' => $data->data]);
     }
 }

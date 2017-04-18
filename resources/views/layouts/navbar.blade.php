@@ -31,7 +31,7 @@
                 @else
                     <li><a href="/posts/create">Create a Post</a></li>
                     <li><a href="/categories/create">Create a Category</a></li>
-                    <li><a><img class="img-responsive img-circle profile_pic" src="/storage/img/{{Auth::user()->img}}"></a></li>
+                    <li><a><img class="img-responsive img-circle profile_pic" src="{{Auth::user()->img}}"></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             {{ Auth::user()->name }} <span class="caret"></span>

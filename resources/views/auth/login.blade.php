@@ -53,6 +53,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     Login
                                 </button>
+                                <a class="btn btn-primary" role="button" href="/login/facebook">Login with FB</a>
 
                             </div>
                         </div>
