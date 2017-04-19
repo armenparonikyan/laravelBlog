@@ -31,9 +31,9 @@ class CategoryController extends Controller
 	}
 	public function edit(Category $category)
 	{
-        if (auth()->id() !== $category->user->id) {
-            return redirect('/');
-        }
+		if (auth()->id() !== $category->user->id) {
+			return redirect('/');
+		}
 		return view('category.edit', compact('category'));
 	}
 	public function editStore($id)
@@ -50,9 +50,9 @@ class CategoryController extends Controller
 	}
 	public function delete(Category $category)
 	{
-        if (auth()->id() === $category->user->id) {
-            $category->delete();
-        }
-        return redirect('/');
-    }
+		if (auth()->id() === $category->user->id) {
+			$category->delete();
+		}
+		return redirect('/');
+	}
 }

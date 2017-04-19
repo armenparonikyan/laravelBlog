@@ -8,10 +8,11 @@ class FacebookUser extends Model
 
     public function user()
     {
-    	return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
-    public static function checkUser($user){
+    public static function checkUser($user)
+    {
     	if ($fbUser = FacebookUser::where('provider_id',$user->getId())->first()) {
     		return $fbUser->user;
     	}else{

@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
 
-	public function __construct()
+    public function __construct()
     {
-		$this->middleware('auth')->except(['index','show']);
-	}
+        $this->middleware('auth')->except(['index','show']);
+    }
     public function index()
     {
         $data = request()->data;
-        
+
         $posts = Post::orderBy('created_at', 'desc')->get();
 
     	return view('index', compact(['posts','data']));
@@ -27,6 +27,7 @@ class PostController extends Controller
     {
     	return view('post.create');
     }
+    
     public function store()
     {
     	$this->validate(request(), [
