@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\CategoryRequest;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -16,41 +18,34 @@ class CategoryController extends Controller
 	{
 		return view('category.create');
 	}
-	public function store()
+	public function store(CategoryRequest $request)
 	{
-		$this->validate(request(),[
-			'category' => 'required|max:255'
-		]);
 
 		Category::create([
-			'name'=>request('category'),
+			'name'=> $request->name,
 			'user_id' => auth()->id()
 		]);
 		
 		return redirect('/');
 	}
-	public function edit(Category $category)
+	public function edit(Category $category, CategoryService $service)
 	{
-		if (auth()->id() !== $category->user->id) {
+		if (!$service->userCreatedCategory($category)) {
 			return redirect('/');
 		}
 		return view('category.edit', compact('category'));
 	}
-	public function editStore($id)
+	public function editStore($id, CategoryRequest $request)
 	{
-		$this->validate(request(),[
-			'name' => 'required|max:255'
-		]);
-
 		Category::find($id)->update([
-			'name' => request('name')
+			'name' => $request->name
 		]);
 
 		return redirect('/');
 	}
-	public function delete(Category $category)
+	public function delete(Category $category, CategoryService $service)
 	{
-		if (auth()->id() === $category->user->id) {
+		if ($service->userCreatedCategory($category)) {
 			$category->delete();
 		}
 		return redirect('/');

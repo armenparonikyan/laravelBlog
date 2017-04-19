@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\PostRequest;
 use App\Post;
+use App\Services\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,40 +30,36 @@ class PostController extends Controller
     	return view('post.create');
     }
     
-    public function store()
+    public function store(PostRequest $request)
     {
-    	$this->validate(request(), [
-    		'title' => 'unique|required|min:5|max:255',
-    		'body' => 'required'
-     	]);
 
         Post::create([
-            'title'=>request('title'),
-            'body'=>request('body'),
+            'title'=>$request->title,
+            'body'=>$request->body,
             'user_id'  => auth()->id()
         ]);
 
         return redirect('/');
     }
 
-    public function edit(Post $post)
+    public function edit(Post $post, PostService $service)
     {
-        if (auth()->id() !== $post->user->id) {
+        if (!$service->userCreatedPost($post)) {
             return redirect('/');
         }
         return view('post.edit', compact('post'));
     }
-    public function editStore(Post $post)
+    public function editStore(PostRequest $request, Post $post)
     {
        $post->update([
-            'title' => request('title'),
-            'body' => request('body')
+            'title' => $request->title,
+            'body' => $request->body
         ]); 
        return redirect('/');
     }
-    public function delete(Post $post)
+    public function delete(Post $post,PostService $service)
     {
-        if (auth()->id() === $post->user->id) {
+        if ($service->userCreatedPost($post)) {
             $post->delete();
         }
         return redirect('/');
@@ -71,9 +69,9 @@ class PostController extends Controller
         $categories = Category::all()->diff($post->categories);
         return view('post.show', compact(['post', 'categories']));
     }
-    public function add(Post $post, Category $category)
+    public function add(Post $post, Category $category, PostService $service)
     {
-        if (auth()->id() === $post->user->id) {
+        if ($service->userCreatedPost($post)) {
             $post->categories()->attach($category);
         }
         return back();
@@ -83,16 +81,9 @@ class PostController extends Controller
     {
         return view('user.img');
     }
-    public function imgStore()
+    public function imgStore(Request $request, PostService $service)
     {
-        if (request()->file('photo')->isValid()) {
-            $path = request()->photo->store('img');
-        }
-        $filename = '/storage/img/'.basename($path);
-        if (auth()->user()->img !== '/storage/img/blank-pic.png') {
-            Storage::delete('img/' . auth()->user()->img);
-        }
-        auth()->user()->update(['img' => $filename]);
+        $service->checkAndUpdateImage($request->photo);
         return redirect('/');
     }
 }
